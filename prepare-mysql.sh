@@ -54,7 +54,7 @@ ok_count="$(grep -c 'completed OK' "${log_file}")"
 
 if (( ${ok_count} == 2 * (${#full_dirs[@]} + ${#incremental_dirs[@]} + 1) )); then
     cat << EOF
-Backup looks to be fully prepared.  Please check the "prepare-progress.log" log
+Backup looks to be fully prepared.  Please check the "prepare-progress.log" file
 to verify before continuing.
 
 If everything looks correct, you can apply the restored files.
