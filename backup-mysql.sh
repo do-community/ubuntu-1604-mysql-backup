@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LC_ALL=C
+
 days_of_backups=3  # Must be less than 7
 backup_owner="backup"
 parent_dir="/backups/mysql"

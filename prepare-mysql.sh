@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LC_ALL=C
+
 shopt -s nullglob
 incremental_dirs=( ./incremental-*/ )
 full_dirs=( ./full-*/ )

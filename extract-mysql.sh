@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LC_ALL=C
+
 backup_owner="backup"
 encryption_key_file="/backups/mysql/encryption_key"
 log_file="extract-progress.log"
