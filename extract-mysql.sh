@@ -49,14 +49,14 @@ do_extraction () {
         mkdir --verbose -p "${restore_dir}"
         xbstream -x -C "${restore_dir}" < "${file}"
 
-        innobackupex_args=(
+        xtrabackup_args=(
             "--parallel=${processors}"
             "--decrypt=AES256"
             "--encrypt-key-file=${encryption_key_file}"
             "--decompress"
         )
 
-        innobackupex "${innobackupex_args[@]}" "${restore_dir}"
+        xtrabackup "${xtrabackup_args[@]}" --target-dir="${restore_dir}"
         find "${restore_dir}" -name "*.xbcrypt" -exec rm {} \;
         find "${restore_dir}" -name "*.qp" -exec rm {} \;
     
@@ -73,7 +73,7 @@ ok_count="$(grep -c 'completed OK' "${log_file}")"
 # informational "completed OK".  If the processing was successful, an
 # additional "completed OK" is printed. Together, this means there should be 2
 # notices per backup file if the process was successful.
-if (( $ok_count !=  2 * $# )); then
+if (( $ok_count !=  $# )); then
     error "It looks like something went wrong. Please check the \"${log_file}\" file for additional information"
 else
     printf "Extraction complete! Backup directories have been extracted to the \"restore\" directory.\n"
