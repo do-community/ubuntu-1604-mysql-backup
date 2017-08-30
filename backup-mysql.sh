@@ -33,10 +33,10 @@ sanity_check () {
 }
 
 set_options () {
-    # List the innobackupex arguments
-    #declare -ga innobackupex_args=(
-    innobackupex_args=(
+    # List the xtrabackup arguments
+    xtrabackup_args=(
         "--defaults-file=${defaults_file}"
+        "--backup"
         "--extra-lsndir=${todays_dir}"
         "--compress"
         "--stream=xbstream"
@@ -46,7 +46,6 @@ set_options () {
         "--compress-threads=${processors}"
         "--encrypt-threads=${processors}"
         "--slave-info"
-        "--incremental"
     )
     
     backup_type="full"
@@ -56,7 +55,7 @@ set_options () {
     if grep -q -s "to_lsn" "${todays_dir}/xtrabackup_checkpoints"; then
         backup_type="incremental"
         lsn=$(awk '/to_lsn/ {print $3;}' "${todays_dir}/xtrabackup_checkpoints")
-        innobackupex_args+=( "--incremental-lsn=${lsn}" )
+        xtrabackup_args+=( "--incremental-lsn=${lsn}" )
     fi
 }
 
@@ -73,7 +72,7 @@ take_backup () {
     # Make sure today's backup directory is available and take the actual backup
     mkdir -p "${todays_dir}"
     find "${todays_dir}" -type f -name "*.incomplete" -delete
-    innobackupex "${innobackupex_args[@]}" "${todays_dir}" > "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" 2> "${log_file}"
+    xtrabackup "${xtrabackup_args[@]}" --target-dir="${todays_dir}" > "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" 2> "${log_file}"
     
     mv "${todays_dir}/${backup_type}-${now}.xbstream.incomplete" "${todays_dir}/${backup_type}-${now}.xbstream"
 }
