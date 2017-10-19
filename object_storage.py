@@ -14,10 +14,10 @@ from dateutil.parser import parse
 # specific to your setup.
 # The bucket will be created in your account if it does not already exist
 backup_bucket = os.environ['MYBUCKETNAME']
-MYACCESSKEY = os.environ['MYACCESSKEY']
-MYSECRETKEY = os.environ['MYSECRETKEY']
-endpoint_url = "https://nyc3.digitaloceanspaces.com"
-region_name = "nyc3"
+access_key = os.environ['MYACCESSKEY']
+secret_key = os.environ['MYSECRETKEY']
+endpoint_url = os.environ['MYENDPOINTURL']
+region_name = os.environ['MYREGIONNAME']
 
 
 class Space():
@@ -26,8 +26,8 @@ class Space():
         self.client = self.session.client('s3',
                                           region_name=region_name,
                                           endpoint_url=endpoint_url,
-                                          aws_access_key_id=MYACCESSKEY,
-                                          aws_secret_access_key=MYSECRETKEY,
+                                          aws_access_key_id=access_key,
+                                          aws_secret_access_key=secret_key,
                                           config=Config(signature_version='s3')
                                           )
         self.bucket = bucket
