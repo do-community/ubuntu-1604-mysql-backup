@@ -22,7 +22,7 @@ trap 'error "An unexpected error occurred."' ERR
 
 sanity_check () {
     # Check user running the script
-    if [ "$(id -un)" != "$backup_owner" ]; then
+    if [ "$(id --user --name)" != "$backup_owner" ]; then
         error "Script can only be run as the \"$backup_owner\" user"
     fi
     
