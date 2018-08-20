@@ -57,7 +57,7 @@ set_backup_type () {
     fi
 
     # Grab today's date, in the same format
-    todays_date="$(date -d"$(echo "${now}" | cut -d' ' -f 1-3)" +%s)"
+    todays_date="$(date -d "$(date -d "${now}" "+%D")" +%s)"
 
     # Compare the two dates
     (( $last_backup_date == $todays_date ))
